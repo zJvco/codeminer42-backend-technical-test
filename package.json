@@ -4,7 +4,9 @@
   "description": "Codeminer42 backend technical test",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "createdb": "node -e 'require(\"./cli/db\").createdb()'",
+    "dropdb": "node -e 'require(\"./cli/db\").dropdb()'"
   },
   "author": "João Victor",
   "license": "MIT",
