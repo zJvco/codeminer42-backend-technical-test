@@ -7,18 +7,14 @@ router.route("/")
     .get((req, res) => {
         res.send("Hello World");
     })
-
-router.route("/:certification")
-    .get((req, res) => {
-        //
-    })
     .post((req, res) => {
         const body = req.body;
-        const certification = req.params.certification;
+        const certification = req.body["certification"];
         const name = body["name"];
         const age = body["age"];
-        const credits = body["credits"];
         const location = body["location"];
+
+        if (!name && !age && !location)
 
         const pilot = new Pilot();
         pilot.certification = certification;
@@ -28,6 +24,11 @@ router.route("/:certification")
         pilot.location = location;
 
         console.log(pilot);
+    })
+
+router.route("/:certification")
+    .get((req, res) => {
+        //
     })
     .put((req, res) => {
         //
