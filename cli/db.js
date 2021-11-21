@@ -1,7 +1,7 @@
 const { exec } = require("child_process");
 
 const ConnectionFactory = require("../models/ConnectionFactory");
-const tables = require("../models/schema");
+const tables = require("../models/sql/schema");
 
 module.exports.createdb = () => {
     const cf = new ConnectionFactory();
@@ -20,7 +20,7 @@ module.exports.createdb = () => {
 
 module.exports.dropdb = () => {
     try {
-        exec("rm -r intergalatic.db");
+        exec("rm -f intergalatic.db");
     }
     catch (error) {
         throw new Error("Not was possible to drop database");
