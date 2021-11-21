@@ -1,10 +1,10 @@
 class Pilot {
     constructor() {
-        this._certification;
-        this._name;
-        this._age;
-        this._credits;
-        this._location;
+        this._certification = null;
+        this._name = null;
+        this._age = null;
+        this._credits = null;
+        this._location = null;
     }
 
     get certification() {
