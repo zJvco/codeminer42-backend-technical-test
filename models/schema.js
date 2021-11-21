@@ -1,8 +1,4 @@
-const ConnectionFactory = require("./ConnectionFactory");
-const conn = new ConnectionFactory();
-
-// Database Structure
-
+// Database Structure Tables
 const pilotTable = `
 CREATE TABLE IF NOT EXISTS pilots (
     certification INTEGER NOT NULL,
@@ -43,8 +39,10 @@ const resourceTable = `
 CREATE TABLE IF NOT EXISTS resources (
     id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    weigth INTEGER NOT NULL
+    weigth INTEGER NOT NULL,
 
     PRIMARY KEY (id)
 )
 `;
+
+module.exports = { pilotTable, shipTable, contractTable, resourceTable }
