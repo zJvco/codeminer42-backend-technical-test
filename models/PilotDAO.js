@@ -8,22 +8,26 @@ class PilotDAO extends DAOModel {
 
     select(obj) {
         const query = "SELECT * FROM pilots WHERE certification = ?";
-        return super.select(query, obj.certification);
+        const values = [obj.certification];
+        return super.select(query, values);
     }
 
     insert(obj) {
         const query = "INSERT INTO pilots (certification, name, age, credits, location) VALUES (?, ?, ?, ?, ?)";
-        return super.insert(query, Object.values(obj));
+        const values = [obj.certification, obj.name, obj.age, obj.credits, obj.location];
+        return super.insert(query, values);
     }
 
     update(obj) {
         const query = "UPDATE pilots SET name = ?, age = ?, credits = ?, location = ? WHERE certification = ?";
-        return super.update(query, Object.values(obj))
+        const values = [obj.name, obj.age, obj.credits, obj.location, obj.certification];
+        return super.update(query, values);
     }
 
     delete(obj) {
         const query = "DELETE FROM pilots WHERE certification = ?";
-        return super.delete(query, Object.values(obj))
+        const values = [obj.certification];
+        return super.delete(query, values);
     }
 }
 
