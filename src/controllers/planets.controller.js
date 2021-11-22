@@ -1,3 +1,5 @@
+const { internalServerErrorHandler, badRequestErrorHandler } = require("../utils/errorHandler");
+
 const Planet = require("../models/Planet");
 const PlanetDAO = require("../models/PlanetDAO");
 
@@ -6,7 +8,7 @@ const selectAllPlanets = (req, res) => {
     const planetDAO = new PlanetDAO();
     planetDAO.selectAll()
         .then(planets => res.json(planets))
-        .catch(err => res.status(500).send(err));
+        .catch(err => internalServerErrorHandler(res, err));
 }
 
 // Create planet
@@ -16,7 +18,7 @@ const createPlanet = (req, res) => {
 
     // Checking if name is empty
     if (!name) {
-        res.status(400).send("Invalid arguments");
+        badRequestErrorHandler(res, "Invalid arguments");
     }
 
     const planet = new Planet();
@@ -25,7 +27,7 @@ const createPlanet = (req, res) => {
     const planetDAO = new PlanetDAO();
     planetDAO.insert(planet)
         .then(() => res.send("Created sucefully"))
-        .catch(err => res.status(400).send(err));
+        .catch(err => internalServerErrorHandler(res, err));
 }
 
-module.exports = {selectAllPlanets, createPlanet}
+module.exports = { selectAllPlanets, createPlanet }

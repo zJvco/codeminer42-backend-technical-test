@@ -1,3 +1,5 @@
+const { internalServerErrorHandler, badRequestErrorHandler } = require("../utils/errorHandler");
+
 const Pilot = require("../models/Pilot");
 const PilotDAO = require("../models/PilotDAO");
 
@@ -6,7 +8,7 @@ const selectAllPilots = (req, res) => {
     const pilotDAO = new PilotDAO();
     pilotDAO.selectAll()
         .then(pilots => res.json(pilots))
-        .catch(err => res.status(500).send(err));
+        .catch(err => internalServerErrorHandler(res, err));
 }
 
 // Select one pilot by id
@@ -21,7 +23,7 @@ const selectPilotById = (req, res) => {
     const pilotDAO = new PilotDAO();
     pilotDAO.select(pilot)
         .then(pilot => res.json(pilot))
-        .catch(err => res.status(500).send(err));
+        .catch(err => internalServerErrorHandler(res, err));
 }
 
 // Create pilot and 
@@ -34,7 +36,7 @@ const createPilot = (req, res) => {
 
     // Checking if value is empty
     if (!certification || !name || !age || !location) {
-        res.status(400).send("Invalid arguments");
+        badRequestErrorHandler(res, "Invalid arguments");
     }
 
     // Pilot class to store information
@@ -48,7 +50,7 @@ const createPilot = (req, res) => {
     const pilotDAO = new PilotDAO();
     pilotDAO.insert(pilot)
         .then(() => res.send("Created sucefully"))
-        .catch(err => res.status(500).send(err));
+        .catch(err => internalServerErrorHandler(res, err));
 }
 
-module.exports = {selectAllPilots, selectPilotById, createPilot}
+module.exports = { selectAllPilots, selectPilotById, createPilot }
