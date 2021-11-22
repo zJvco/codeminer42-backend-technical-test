@@ -1,111 +1,29 @@
-const ConnectionFactory = require("./ConnectionFactory");
+const DAOModel = require("./DAOModel");
 
-class PilotDAO {
-    constructor() {
-        this.conn = null;
-    }
-
+class PilotDAO extends DAOModel {
     selectAll() {
-        this.openConnection();
         const query = "SELECT * FROM pilots";
-        return new Promise((resolve, reject) => {
-            this.conn.all(query, (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(row);
-                }
-            });
-        })
-        .finally(() => {
-            this.closeConnection();
-        });
+        return super.selectAll(query);
     }
 
     select(obj) {
-        this.openConnection();
         const query = "SELECT * FROM pilots WHERE certification = ?";
-        return new Promise((resolve, reject) => {
-            this.conn.get(query, obj.certification, (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(row);
-                }
-            });
-        })
-        .finally(() => {
-            this.closeConnection();
-        });
+        return super.select(query, obj.certification);
     }
 
     insert(obj) {
-        this.openConnection();
         const query = "INSERT INTO pilots (certification, name, age, credits, location) VALUES (?, ?, ?, ?, ?)";
-        return new Promise((resolve, reject) => {
-            this.conn.run(query, Object.values(obj), (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(row);
-                }
-            });
-        })
-        .finally(() => {
-            this.closeConnection();
-        });
+        return super.insert(query, Object.values(obj));
     }
 
     update(obj) {
-        this.openConnection();
         const query = "UPDATE pilots SET name = ?, age = ?, credits = ?, location = ? WHERE certification = ?";
-        return new Promise((resolve, reject) => {
-            this.conn.run(query, Object.values(obj), (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(row);
-                }
-            });
-        })
-        .finally(() => {
-            this.closeConnection();
-        });
+        return super.update(query, Object.values(obj))
     }
 
     delete(obj) {
-        this.openConnection();
         const query = "DELETE FROM pilots WHERE certification = ?";
-        return new Promise((resolve, reject) => {
-            this.conn.run(query, Object.values(obj), (err, row) => {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(row);
-                }
-            });
-        })
-        .finally(() => {
-            this.closeConnection();
-        });
-    }
-
-    openConnection() {
-        this.conn = new ConnectionFactory().connection;
-    }
-
-    closeConnection() {
-        try {
-            this.conn.close();
-        }
-        catch (error) {
-            throw new Error("The connection can't be closed");
-        }
+        return super.delete(query, Object.values(obj))
     }
 }
 
