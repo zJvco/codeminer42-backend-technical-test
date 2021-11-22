@@ -11,6 +11,19 @@ const selectAllPlanets = (req, res) => {
         .catch(err => internalServerErrorHandler(res, err));
 }
 
+// Select planet by id
+const selectPlanet = (req, res) => {
+    const id = req.params.id;
+
+    const planet = new Planet();
+    planet.id = id;
+
+    const planetDAO = new PlanetDAO();
+    planetDAO.select(planet)
+        .then(planet => res.json(planet))
+        .catch(err => internalServerErrorHandler(res, err));
+}
+
 // Create planet
 const createPlanet = (req, res) => {
     const body = req.body;
@@ -26,8 +39,8 @@ const createPlanet = (req, res) => {
 
     const planetDAO = new PlanetDAO();
     planetDAO.insert(planet)
-        .then(() => res.send("Created sucefully"))
+        .then(() => res.send("Created successfully"))
         .catch(err => internalServerErrorHandler(res, err));
 }
 
-module.exports = { selectAllPlanets, createPlanet }
+module.exports = { selectAllPlanets, selectPlanet, createPlanet }

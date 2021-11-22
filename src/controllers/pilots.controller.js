@@ -15,11 +15,9 @@ const selectAllPilots = (req, res) => {
 const selectPilotById = (req, res) => {
     const id = req.params.id;
 
-    // Pilot class to store information
     const pilot = new Pilot();
     pilot.certification = id;
 
-    // Data acess object to select data in db
     const pilotDAO = new PilotDAO();
     pilotDAO.select(pilot)
         .then(pilot => res.json(pilot))
@@ -39,17 +37,15 @@ const createPilot = (req, res) => {
         badRequestErrorHandler(res, "Invalid arguments");
     }
 
-    // Pilot class to store information
     const pilot = new Pilot();
     pilot.certification = certification;
     pilot.name = name;
     pilot.age = age;
     pilot.location = location;
 
-    // Data acess object to persist data in db
     const pilotDAO = new PilotDAO();
     pilotDAO.insert(pilot)
-        .then(() => res.send("Created sucefully"))
+        .then(() => res.send("Created successfully"))
         .catch(err => internalServerErrorHandler(res, err));
 }
 

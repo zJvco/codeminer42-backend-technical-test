@@ -1,10 +1,10 @@
 class Ship {
     constructor() {
         this._id = null;
-        this._fuel_capacity = null;
-        this._fuel_level = null;
-        this._weight_capacity = null;
-        this._pilot_certification = null;
+        this._fuelCapacity = null;
+        this._fuelLevel = null;
+        this._weightCapacity = null;
+        this._pilotCertification = null;
     }
 
     get id() {
@@ -16,35 +16,35 @@ class Ship {
     }
 
     get fuelCapacity() {
-        return this._fuel_capacity;
+        return this._fuelCapacity;
     }
 
     set fuelCapacity(fuelCapacity) {
-        this._fuel_capacity = fuelCapacity;
+        this._fuelCapacity = fuelCapacity;
     }
 
     get fuelLevel() {
-        return this._fuel_level;
+        return this._fuelCapacity;
     }
 
     set fuelLevel(fuelLevel) {
-        this._fuel_level = fuelLevel;
+        this._fuelLevel = fuelLevel;
     }
 
     get weightCapacity() {
-        return this._weight_capacity;
+        return this._weightCapacity;
     }
 
     set weightCapacity(weightCapacity) {
-        this._weight_capacity = weightCapacity;
+        this._weightCapacity = weightCapacity;
     }
 
     get pilotCertification() {
-        return this._pilot_certification;
+        return this._pilotCertification;
     }
 
     set pilotCertification(pilotCertification) {
-        this._pilot_certification = pilotCertification;
+        this._pilotCertification = pilotCertification;
     }
 }
 

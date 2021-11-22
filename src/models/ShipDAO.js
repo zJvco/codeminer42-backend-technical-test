@@ -5,7 +5,7 @@ class ShipDAO extends DAOModel {
         const query = "SELECT * FROM ships";
         return super.selectAll(query);
     }
-    
+
     select(obj) {
         const query = "SELECT * FROM ships WHERE id = ?";
         const values = [obj.id];
@@ -14,7 +14,7 @@ class ShipDAO extends DAOModel {
 
     insert(obj) {
         const query = "INSERT INTO ships (id, fuel_capacity, fuel_level, weight_capacity, pilot_certification) VALUES (?, ?, ?, ?, ?)";
-        const values = [obj.id, obj.fuel_capacity, obj.fuel_level, obj.weight_capacity, obj.pilot_certification];
+        const values = [obj.id, obj.fuelCapacity, obj.fuelLevel, obj.weightCapacity, obj.pilotCertification];
         return super.insert(query, values);
     }
 
