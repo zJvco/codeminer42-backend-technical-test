@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS resources (
 const planetTable = `
 CREATE TABLE IF NOT EXISTS planets (
     id INTEGER NOT NULL,
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
 
     PRIMARY KEY (id)
 )

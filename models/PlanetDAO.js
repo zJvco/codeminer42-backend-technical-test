@@ -1,13 +1,13 @@
 const ConnectionFactory = require("./ConnectionFactory");
 
-class PilotDAO {
+class PlanetDAO {
     constructor() {
         this.conn = null;
     }
 
     selectAll() {
         this.openConnection();
-        const query = "SELECT * FROM pilots";
+        const query = "SELECT * FROM planets";
         return new Promise((resolve, reject) => {
             this.conn.all(query, (err, row) => {
                 if (err) {
@@ -22,12 +22,12 @@ class PilotDAO {
             this.closeConnection();
         });
     }
-
+    
     select(obj) {
         this.openConnection();
-        const query = "SELECT * FROM pilots WHERE certification = ?";
+        const query = "SELECT * FROM planets WHERE id = ?";
         return new Promise((resolve, reject) => {
-            this.conn.get(query, obj.certification, (err, row) => {
+            this.conn.get(query, obj.id, (err, row) => {
                 if (err) {
                     reject(err);
                 }
@@ -43,7 +43,7 @@ class PilotDAO {
 
     insert(obj) {
         this.openConnection();
-        const query = "INSERT INTO pilots (certification, name, age, credits, location) VALUES (?, ?, ?, ?, ?)";
+        const query = "INSERT INTO planets (id, name) VALUES (?, ?)";
         return new Promise((resolve, reject) => {
             this.conn.run(query, Object.values(obj), (err, row) => {
                 if (err) {
@@ -61,7 +61,7 @@ class PilotDAO {
 
     update(obj) {
         this.openConnection();
-        const query = "UPDATE pilots SET name = ?, age = ?, credits = ?, location = ? WHERE certification = ?";
+        const query = "UPDATE planets SET name = ? WHERE id = ?";
         return new Promise((resolve, reject) => {
             this.conn.run(query, Object.values(obj), (err, row) => {
                 if (err) {
@@ -79,7 +79,7 @@ class PilotDAO {
 
     delete(obj) {
         this.openConnection();
-        const query = "DELETE FROM pilots WHERE certification = ?";
+        const query = "DELETE FROM planets WHERE id = ?";
         return new Promise((resolve, reject) => {
             this.conn.run(query, Object.values(obj), (err, row) => {
                 if (err) {
@@ -109,4 +109,4 @@ class PilotDAO {
     }
 }
 
-module.exports = PilotDAO
+module.exports = PlanetDAO

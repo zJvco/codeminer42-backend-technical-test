@@ -1,7 +1,10 @@
+const config = require("../config.json");
+const sqlite = require("sqlite3");
+
 class ConnectionFactory {
     constructor() {
-        this.name = require("../config.json").database.name;
-        this.database = require("sqlite3");
+        this.name = config.database.name;
+        this.database = sqlite;
         this.conn = null;
     }
 
