@@ -11,7 +11,7 @@ const selectAllPilots = (req, res) => {
         .catch(err => internalServerErrorHandler(res, err));
 }
 
-// Select one pilot by id
+// Select pilot by id
 const selectPilotById = (req, res) => {
     const id = req.params.id;
 
@@ -24,7 +24,7 @@ const selectPilotById = (req, res) => {
         .catch(err => internalServerErrorHandler(res, err));
 }
 
-// Create pilot and 
+// Create pilot
 const createPilot = (req, res) => {
     const body = req.body;
     const certification = body["certification"];

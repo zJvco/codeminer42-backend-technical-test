@@ -28,35 +28,18 @@ const contractTable = `
 CREATE TABLE IF NOT EXISTS contracts (
     id INTEGER NOT NULL,
     description TEXT NOT NULL,
+    resource_name TEXT NOT NULL,
+    resource_weight INTEGER NOT NULL,
     origin_planet TEXT NOT NULL,
     destination TEXT NOT NULL,
     value FLOAT NOT NULL,
-    pilot_certification INTEGER NOT NULL,
+    status INTEGER DEFAULT 0 NOT NULL,
+    pilot_certification INTEGER,
 
     PRIMARY KEY (id),
     FOREIGN KEY (origin_planet) REFERENCES planets(id),
     FOREIGN KEY (destination) REFERENCES planets(id),
     FOREIGN KEY (pilot_certification) REFERENCES pilots(certification)
-)
-`;
-
-const contractResourceTable = `
-CREATE TABLE IF NOT EXISTS contracts_resources (
-    contract_id INTEGER NOT NULL,
-    resource_id INTEGER NOT NULL,
-    weigth INTEGER NOT NULL,
-
-    FOREIGN KEY (contract_id) REFERENCES contracts(id),
-    FOREIGN KEY (resource_id) REFERENCES resources(id)
-)
-`;
-
-const resourceTable = `
-CREATE TABLE IF NOT EXISTS resources (
-    id INTEGER NOT NULL,
-    name TEXT UNIQUE NOT NULL,
-
-    PRIMARY KEY (id)
 )
 `;
 
@@ -69,4 +52,4 @@ CREATE TABLE IF NOT EXISTS planets (
 )
 `;
 
-module.exports = { pilotTable, shipTable, contractTable, contractResourceTable, resourceTable, planetTable }
+module.exports = { pilotTable, shipTable, contractTable, planetTable }
