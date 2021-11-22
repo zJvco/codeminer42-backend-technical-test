@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS ships (
     fuel_capacity INTEGER NOT NULL,
     fuel_level INTEGER NOT NULL,
     weight_capacity INTEGER NOT NULL,
-    pilot_certification INTEGER NOT NULL,
+    pilot_certification INTEGER UNIQUE NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (pilot_certification) REFERENCES pilots(certification)
@@ -44,6 +44,7 @@ const contractResourceTable = `
 CREATE TABLE IF NOT EXISTS contracts_resources (
     contract_id INTEGER NOT NULL,
     resource_id INTEGER NOT NULL,
+    weigth INTEGER NOT NULL,
 
     FOREIGN KEY (contract_id) REFERENCES contracts(id),
     FOREIGN KEY (resource_id) REFERENCES resources(id)
@@ -53,8 +54,7 @@ CREATE TABLE IF NOT EXISTS contracts_resources (
 const resourceTable = `
 CREATE TABLE IF NOT EXISTS resources (
     id INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    weigth INTEGER NOT NULL,
+    name TEXT UNIQUE NOT NULL,
 
     PRIMARY KEY (id)
 )
