@@ -6,9 +6,15 @@ class ShipDAO extends DAOModel {
         return super.selectAll(query);
     }
 
-    select(obj) {
+    selectById(obj) {
         const query = "SELECT * FROM ships WHERE id = ?";
         const values = [obj.id];
+        return super.select(query, values);
+    }
+
+    selectByPilotCertification(obj) {
+        const query = "SELECT * FROM ships WHERE pilot_certification = ?";
+        const values = [obj.pilotCertification];
         return super.select(query, values);
     }
 
@@ -20,7 +26,7 @@ class ShipDAO extends DAOModel {
 
     update(obj) {
         const query = "UPDATE ships SET fuel_capacity = ?, fuel_level = ?, weight_capacity = ?, pilot_certification = ? WHERE id = ?";
-        const values = [obj.fuel_capacity, obj.fuel_level, obj.weight_capacity, obj.pilot_certification, obj.id];
+        const values = [obj.fuelCapacity, obj.fuelLevel, obj.weightCapacity, obj.pilotCertification, obj.id];
         return super.update(query, values);
     }
 

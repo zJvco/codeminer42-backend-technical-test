@@ -1,3 +1,4 @@
+// Origin -> Destinations -> Values
 const journeyFuelRotes = {
     "andvari": {
         "andvari": null,
@@ -25,12 +26,9 @@ const journeyFuelRotes = {
     }
 }
 
-function checkBlockedRoute(origin, destination) {
-    if (origin == destination) {
-        return true;
-    }
-
-    console.log("Hello")
+function getFuelCosts(origin, destination) {
+    // return null if the route is blocked/invalid or value if the pilot can travel
+    return journeyFuelRotes[origin][destination];
 }
 
-module.exports = { checkBlockedRoute }
+module.exports = { getFuelCosts }

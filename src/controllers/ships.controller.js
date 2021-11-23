@@ -19,7 +19,7 @@ const selectShip = (req, res) => {
     ship.id = id;
 
     const shipDAO = new ShipDAO();
-    shipDAO.select(ship)
+    shipDAO.selectById(ship)
         .then(ship => res.json(ship))
         .catch(err => internalServerErrorHandler(res, err));
 }

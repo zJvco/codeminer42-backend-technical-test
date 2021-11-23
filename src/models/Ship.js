@@ -24,7 +24,7 @@ class Ship {
     }
 
     get fuelLevel() {
-        return this._fuelCapacity;
+        return this._fuelLevel;
     }
 
     set fuelLevel(fuelLevel) {

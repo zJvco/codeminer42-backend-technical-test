@@ -27,11 +27,14 @@ const selectPlanet = (req, res) => {
 // Create planet
 const createPlanet = (req, res) => {
     const body = req.body;
-    const name = body["name"];
+    const name = body["name"].toLowerCase();
 
     // Checking if name is empty
     if (!name) {
         badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (name != "andvari" && name != "demeter" && name != "aqua" && name != "calas") {
+        badRequestErrorHandler(res, "You can insert only specify planets like andvari, demeter, aqua, calas");
     }
 
     const planet = new Planet();
