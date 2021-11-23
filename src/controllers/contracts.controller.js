@@ -27,15 +27,15 @@ const selectContractById = (req, res) => {
 // Create contract
 const createContract = (req, res) => {
     const body = req.body;
-    const description = body["description"];
-    const resourceName = body["resourceName"];
-    const resourceWeight = body["resourceWeight"];
-    const originPlanet = body["originPlanet"];
-    const destination = body["destination"];
-    const value = body["value"];
+    const description = body["description"].toLowerCase();
+    const resourceName = body["resourceName"].toLowerCase();
+    const resourceWeight = body["resourceWeight"].toLowerCase();
+    const originPlanetId = body["originPlanetId"].toLowerCase();
+    const destinationId = body["destinationId"].toLowerCase();
+    const value = body["value"].toLowerCase();
 
     // Checking if value is empty
-    if (!description || !resourceName || !resourceWeight || !originPlanet || !destination || !value) {
+    if (!description || !resourceName || !resourceWeight || !originPlanetId || !destinationId || !value) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
 
@@ -44,8 +44,8 @@ const createContract = (req, res) => {
     contract.description = description;
     contract.resourceName = resourceName;
     contract.resourceWeight = resourceWeight;
-    contract.originPlanet = originPlanet;
-    contract.destination = destination;
+    contract.originPlanetId = originPlanetId;
+    contract.destinationId = destinationId;
     contract.value = value;
 
     const contractDAO = new ContractDAO();

@@ -13,14 +13,14 @@ class PilotDAO extends DAOModel {
     }
 
     insert(obj) {
-        const query = "INSERT INTO pilots (certification, name, age, credits, location) VALUES (?, ?, ?, ?, ?)";
-        const values = [obj.certification, obj.name, obj.age, obj.credits, obj.location];
+        const query = "INSERT INTO pilots (certification, name, age, credits, location_id) VALUES (?, ?, ?, ?, ?)";
+        const values = [obj.certification, obj.name, obj.age, obj.credits, obj.locationId];
         return super.insert(query, values);
     }
 
     update(obj) {
-        const query = "UPDATE pilots SET name = ?, age = ?, credits = ?, location = ? WHERE certification = ?";
-        const values = [obj.name, obj.age, obj.credits, obj.location, obj.certification];
+        const query = "UPDATE pilots SET name = ?, age = ?, credits = ?, location_id = ? WHERE certification = ?";
+        const values = [obj.name, obj.age, obj.credits, obj.locationId, obj.certification];
         return super.update(query, values);
     }
 

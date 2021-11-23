@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS pilots (
     name TEXT NOT NULL,
     age INTEGER NOT NULL,
     credits FLOAT,
-    location INTEGER NOT NULL,
+    location_id INTEGER NOT NULL,
 
     PRIMARY KEY (certification),
     FOREIGN KEY (location) REFERENCES planets(id)
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS contracts (
     description TEXT NOT NULL,
     resource_name TEXT NOT NULL,
     resource_weight INTEGER NOT NULL,
-    origin_planet TEXT NOT NULL,
-    destination TEXT NOT NULL,
+    origin_planet_id TEXT NOT NULL,
+    destination_id TEXT NOT NULL,
     value FLOAT NOT NULL,
     status INTEGER DEFAULT 0 NOT NULL,
     pilot_certification INTEGER,

@@ -4,7 +4,7 @@ class Pilot {
         this._name = null;
         this._age = null;
         this._credits = null;
-        this._location = null;
+        this._locationId = null;
     }
 
     get certification() {
@@ -39,12 +39,12 @@ class Pilot {
         this._credits = credits;
     }
 
-    get location() {
-        return this._location;
+    get locationId() {
+        return this._locationId;
     }
 
-    set location(location) {
-        this._location = location;
+    set locationId(locationId) {
+        this._locationId = locationId;
     }
 }
 

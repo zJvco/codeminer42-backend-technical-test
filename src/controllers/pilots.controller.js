@@ -32,13 +32,13 @@ const selectPilotById = (req, res) => {
 // Create pilot
 const createPilot = (req, res) => {
     const body = req.body;
-    const certification = body["certification"];
-    const name = body["name"];
+    const certification = body["certification"].toLowerCase();
+    const name = body["name"].toLowerCase();
     const age = body["age"];
-    const location = body["location"];
+    const locationId = body["locationId"];
 
     // Checking if value is empty
-    if (!certification || !name || !age || !location) {
+    if (!certification || !name || !age || !locationId) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
 
@@ -46,7 +46,7 @@ const createPilot = (req, res) => {
     pilot.certification = certification;
     pilot.name = name;
     pilot.age = age;
-    pilot.location = location;
+    pilot.locationId = locationId;
 
     const pilotDAO = new PilotDAO();
     pilotDAO.insert(pilot)
@@ -76,7 +76,7 @@ const journey = async (req, res) => {
         pilot.name = selectedPilot.name;
         pilot.age = selectedPilot.age;
         pilot.credits = selectedPilot.credits;
-        pilot.location = selectedPilot.location;        
+        pilot.locationId = selectedPilot.location_id;        
     }
     catch (error) {
         return internalServerErrorHandler(res, error);
@@ -84,7 +84,7 @@ const journey = async (req, res) => {
 
     // Create origin planet object
     let planetOrigin = new Planet();
-    planetOrigin.id = pilot.location;
+    planetOrigin.id = pilot.locationId;
     
     const planetOriginDAO = new PlanetDAO();
 
@@ -159,7 +159,7 @@ const journey = async (req, res) => {
     }
 
     // Change pilot location and ship fuel
-    pilot.location = planetDestination.id;
+    pilot.locationId = planetDestination.id;
     ship.fuelLevel -= fuelCost;
 
     try {

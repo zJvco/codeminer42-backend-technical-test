@@ -29,10 +29,10 @@ const selectShip = (req, res) => {
 // Create a ship
 const createShip = (req, res) => {
     const body = req.body;
-    const fuelCapacity = body["fuelCapacity"];
-    const fuelLevel = 100;
-    const weightCapacity = body["weightCapacity"];
-    const pilotCertification = body["pilotCertification"];
+    const fuelCapacity = body["fuelCapacity"].toLowerCase();
+    const fuelLevel = fuelCapacity;
+    const weightCapacity = body["weightCapacity"].toLowerCase();
+    const pilotCertification = body["pilotCertification"].toLowerCase();
 
     // Checking if the values is empty
     if (!fuelCapacity || !fuelLevel || !weightCapacity || !pilotCertification) {
@@ -121,7 +121,7 @@ const refillFuel = async (req, res) => {
         pilot.certification = selectedPilot.certification;
         pilot.name = selectedPilot.name;
         pilot.age = selectedPilot.age;
-        pilot.location = selectedPilot.location;
+        pilot.locationId = selectedPilot.location_id;
     }
     catch (error) {
         return internalServerErrorHandler(res, error);

@@ -4,8 +4,8 @@ class Contract {
         this._description = null;
         this._resourceName = null;
         this._resourceWeight = null;
-        this._originPlanet = null;
-        this._destination = null;
+        this._originPlanetId = null;
+        this._destinationId = null;
         this._value = null;
         this._status = 0;
         this._pilotCertification = null;
@@ -43,20 +43,20 @@ class Contract {
         this._resourceWeight = resourceWeight;
     }
 
-    get originPlanet() {
-        return this._originPlanet;
+    get originPlanetId() {
+        return this._originPlanetId;
     }
 
-    set originPlanet(originPlanet) {
-        this._originPlanet = originPlanet;
+    set originPlanetId(originPlanetId) {
+        this._originPlanetId = originPlanetId;
     }
 
-    get destination() {
-        return this._destination;
+    get destinationId() {
+        return this._destinationId;
     }
 
-    set destination(destination) {
-        this._destination = destination;
+    set destinationId(destinationId) {
+        this._destinationId = destinationId;
     }
 
     get value() {
