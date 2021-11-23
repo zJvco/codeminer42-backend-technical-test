@@ -36,7 +36,7 @@ const createContract = (req, res) => {
 
     // Checking if value is empty
     if (!description || !resourceName || !resourceWeight || !originPlanet || !destination || !value) {
-        badRequestErrorHandler(res, "Invalid arguments");
+        return badRequestErrorHandler(res, "Invalid arguments");
     }
 
     // Contract attributes

@@ -34,7 +34,7 @@ const createShip = (req, res) => {
 
     // Checking if the values is empty
     if (!fuelCapacity || !fuelLevel || !weightCapacity || !pilotCertification) {
-        badRequestErrorHandler(res, "Invalid Arguments");
+        return badRequestErrorHandler(res, "Invalid Arguments");
     }
 
     const ship = new Ship();

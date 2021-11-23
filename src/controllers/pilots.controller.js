@@ -39,7 +39,7 @@ const createPilot = (req, res) => {
 
     // Checking if value is empty
     if (!certification || !name || !age || !location) {
-        badRequestErrorHandler(res, "Invalid arguments");
+        return badRequestErrorHandler(res, "Invalid arguments");
     }
 
     const pilot = new Pilot();
@@ -69,7 +69,7 @@ const journey = async (req, res) => {
         const selectedPilot = await pilotDAO.select(pilot);
 
         if (!selectedPilot) {
-            badRequestErrorHandler(res, "Pilot not found");
+            return badRequestErrorHandler(res, "Pilot not found");
         }
 
         pilot.certification = selectedPilot.certification;
@@ -79,7 +79,7 @@ const journey = async (req, res) => {
         pilot.location = selectedPilot.location;        
     }
     catch (error) {
-        internalServerErrorHandler(res, error);
+        return internalServerErrorHandler(res, error);
     }
 
     // Create origin planet object
@@ -94,14 +94,14 @@ const journey = async (req, res) => {
         planetOrigin.name = selectedPlanetOrigin.name;
     }
     catch (error) {
-        internalServerErrorHandler(res, err);        
+        return internalServerErrorHandler(res, err);        
     }
 
     const body = req.body;
     const destination = body["destination"].toLowerCase();
 
     if (!destination) {
-        badRequestErrorHandler(res, "Invalid arguments");
+        return badRequestErrorHandler(res, "Invalid arguments");
     }
 
     // Create destination planet object
@@ -114,21 +114,21 @@ const journey = async (req, res) => {
         const selectedPlanet = await planetDestinationDAO.select(planetDestination);
         
         if (!selectedPlanet) {
-            badRequestErrorHandler(res, "Planet not exists");
+            return badRequestErrorHandler(res, "Planet not exists");
         }
 
         planetDestination.id = selectedPlanet.id;
         planetDestination.name = selectedPlanet.name;
     }
     catch (error) {
-        internalServerErrorHandler(res, error);
+        return internalServerErrorHandler(res, error);
     }
 
     // Get fuel cost to apply in pilot ship
     let fuelCost = getFuelCosts(planetOrigin.name, planetDestination.name);
 
     if (fuelCost == null) {
-        badRequestErrorHandler(res, `You can't travel from ${planetOrigin.name} to ${planetDestination.name}`);
+        return badRequestErrorHandler(res, `You can't travel from ${planetOrigin.name} to ${planetDestination.name}`);
     }
 
     // Create ship object
@@ -141,7 +141,7 @@ const journey = async (req, res) => {
         const selectedPilotShip = await shipDAO.selectByPilotCertification(ship);
         
         if (!selectedPilotShip || selectedPilotShip.pilot_certification != pilot.certification) {
-            badRequestErrorHandler(res, `The pilot ${pilot.name} don't have any ship registred`);
+            return badRequestErrorHandler(res, `The pilot ${pilot.name} don't have any ship registred`);
         }
 
         ship.id = selectedPilotShip.id;
@@ -151,11 +151,11 @@ const journey = async (req, res) => {
         ship.pilotCertification = selectedPilotShip.pilot_certification;
     }
     catch (error) {
-        internalServerErrorHandler(res, error);
+        return internalServerErrorHandler(res, error);
     }
 
     if (ship.fuelLevel < fuelCost) {
-        unauthorizedErrorHandler(res, "You need to refill fuel of your ship");
+        return unauthorizedErrorHandler(res, "You need to refill fuel of your ship");
     }
 
     // Change pilot location and ship fuel
@@ -167,10 +167,10 @@ const journey = async (req, res) => {
         await shipDAO.update(ship);
     }
     catch (error) {
-        internalServerErrorHandler(res, error);
+        return internalServerErrorHandler(res, error);
     }
     finally {
-        res.status(200).send(`Journey completed, you are in ${planetDestination.name} now`);
+        return res.status(200).send(`Journey completed, you are in ${planetDestination.name} now`);
     }
 }
 
