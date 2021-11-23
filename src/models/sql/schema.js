@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS pilots (
     location_id INTEGER NOT NULL,
 
     PRIMARY KEY (certification),
-    FOREIGN KEY (location) REFERENCES planets(id)
+    FOREIGN KEY (location_id) REFERENCES planets(id)
 )
 `;
 
@@ -31,15 +31,15 @@ CREATE TABLE IF NOT EXISTS contracts (
     description TEXT NOT NULL,
     resource_name TEXT NOT NULL,
     resource_weight INTEGER NOT NULL,
-    origin_planet_id TEXT NOT NULL,
-    destination_id TEXT NOT NULL,
+    origin_planet_id INTEGER NOT NULL,
+    destination_id INTEGER NOT NULL,
     value FLOAT NOT NULL,
-    status INTEGER DEFAULT 0 NOT NULL,
+    status TEXT DEFAULT "open" NOT NULL,
     pilot_certification INTEGER,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (origin_planet) REFERENCES planets(id),
-    FOREIGN KEY (destination) REFERENCES planets(id),
+    FOREIGN KEY (origin_planet_id) REFERENCES planets(id),
+    FOREIGN KEY (destination_id) REFERENCES planets(id),
     FOREIGN KEY (pilot_certification) REFERENCES pilots(certification)
 )
 `;

@@ -1,4 +1,5 @@
 const { internalServerErrorHandler, badRequestErrorHandler } = require("../utils/errorHandler");
+const { validateNumber, validateString } = require("../utils/dataTypeValidator");
 
 const Contract = require("../models/Contract");
 const ContractDAO = require("../models/ContractDAO");
@@ -29,13 +30,19 @@ const createContract = (req, res) => {
     const body = req.body;
     const description = body["description"].toLowerCase();
     const resourceName = body["resourceName"].toLowerCase();
-    const resourceWeight = body["resourceWeight"].toLowerCase();
-    const originPlanetId = body["originPlanetId"].toLowerCase();
-    const destinationId = body["destinationId"].toLowerCase();
-    const value = body["value"].toLowerCase();
+    const resourceWeight = body["resourceWeight"];
+    const originPlanetId = body["originPlanetId"];
+    const destinationId = body["destinationId"];
+    const value = body["value"];
 
     // Checking if value is empty
     if (!description || !resourceName || !resourceWeight || !originPlanetId || !destinationId || !value) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateNumber(resourceWeight, originPlanetId, destinationId, value)) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateString(description, resourceName)) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
 

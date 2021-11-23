@@ -1,4 +1,5 @@
 const { internalServerErrorHandler, badRequestErrorHandler } = require("../utils/errorHandler");
+const { validateString } = require("../utils/dataTypeValidator");
 
 const Planet = require("../models/Planet");
 const PlanetDAO = require("../models/PlanetDAO");
@@ -27,10 +28,13 @@ const selectPlanet = (req, res) => {
 // Create planet
 const createPlanet = (req, res) => {
     const body = req.body;
-    const name = body["name"].toLowerCase();
+    const name = body["name"];
 
     // Checking if name is empty
     if (!name) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateString(name)) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
     else if (name != "andvari" && name != "demeter" && name != "aqua" && name != "calas") {

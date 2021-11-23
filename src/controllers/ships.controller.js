@@ -1,4 +1,5 @@
 const { internalServerErrorHandler, badRequestErrorHandler } = require("../utils/errorHandler");
+const { validateNumber } = require("../utils/dataTypeValidator");
 
 const Ship = require("../models/Ship");
 const ShipDAO = require("../models/ShipDAO");
@@ -29,14 +30,17 @@ const selectShip = (req, res) => {
 // Create a ship
 const createShip = (req, res) => {
     const body = req.body;
-    const fuelCapacity = body["fuelCapacity"].toLowerCase();
+    const fuelCapacity = body["fuelCapacity"];
     const fuelLevel = fuelCapacity;
-    const weightCapacity = body["weightCapacity"].toLowerCase();
-    const pilotCertification = body["pilotCertification"].toLowerCase();
+    const weightCapacity = body["weightCapacity"];
+    const pilotCertification = body["pilotCertification"];
 
     // Checking if the values is empty
     if (!fuelCapacity || !fuelLevel || !weightCapacity || !pilotCertification) {
-        return badRequestErrorHandler(res, "Invalid Arguments");
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateNumber(fuelCapacity, fuelLevel, weightCapacity, pilotCertification)) {
+        return badRequestErrorHandler(res, "Invalid arguments");
     }
 
     const pilot = new Pilot();

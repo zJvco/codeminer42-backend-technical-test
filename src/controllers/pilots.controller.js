@@ -1,5 +1,6 @@
 const { internalServerErrorHandler, badRequestErrorHandler, unauthorizedErrorHandler } = require("../utils/errorHandler");
 const { getFuelCosts } = require("../utils/checkCosts");
+const { validateNumber, validateString } = require("../utils/dataTypeValidator");
 
 const Pilot = require("../models/Pilot");
 const PilotDAO = require("../models/PilotDAO");
@@ -32,13 +33,19 @@ const selectPilotById = (req, res) => {
 // Create pilot
 const createPilot = (req, res) => {
     const body = req.body;
-    const certification = body["certification"].toLowerCase();
+    const certification = body["certification"];
     const name = body["name"].toLowerCase();
     const age = body["age"];
     const locationId = body["locationId"];
 
     // Checking if value is empty
     if (!certification || !name || !age || !locationId) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateNumber(certification, age, locationId)) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateString(name)) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
 
