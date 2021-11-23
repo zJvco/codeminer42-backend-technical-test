@@ -6,5 +6,6 @@ const controller = require("../controllers/pilots.controller");
 router.get("/", controller.selectAllPilots);
 router.get("/:id", controller.selectPilotById);
 router.post("/", controller.createPilot);
+router.post("/:id/journey", controller.journey);
 
 module.exports = router

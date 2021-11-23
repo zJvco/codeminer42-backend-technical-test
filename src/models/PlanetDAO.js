@@ -7,8 +7,8 @@ class PlanetDAO extends DAOModel {
     }
     
     select(obj) {
-        const query = "SELECT * FROM planets WHERE id = ?";
-        const values = [obj.id];
+        const query = "SELECT * FROM planets WHERE id = ? or name = ?";
+        const values = [obj.id, obj.name];
         return super.select(query, values);
     }
 

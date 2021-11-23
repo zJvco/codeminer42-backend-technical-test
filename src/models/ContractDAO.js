@@ -13,14 +13,14 @@ class ContractDAO extends DAOModel {
     }
 
     insert(obj) {
-        const query = "INSERT INTO contracts (id, description, resource_name, resource_weight, origin_planet, destination, value) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        const values = [obj.id, obj.description, obj.resourceName, obj.resourceWeight,  obj.originPlanet, obj.destination, obj.value];
+        const query = "INSERT INTO contracts (id, description, resource_name, resource_weight, origin_planet, destination, value, status, pilot_certification) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const values = [obj.id, obj.description, obj.resourceName, obj.resourceWeight,  obj.originPlanet, obj.destination, obj.value, obj.status, obj.pilotCertification];
         return super.insert(query, values);
     }
 
     update(obj) {
-        const query = "UPDATE contracts SET status = ?, pilot_certification = ? WHERE id = ?";
-        const values = [obj.status, obj.pilotCertification, obj.id];
+        const query = "UPDATE contracts SET description = ?, resource_name = ?, resourece_weight = ?, origin_planet = ?, destination = ?, value = ?, status = ?, pilot_certification = ? WHERE id = ?";
+        const values = [obj.description, obj.resourceName, obj.resourceWeight, obj.originPlanet, obj.destination, obj.value, obj.status, obj.pilotCertification, obj.id];
         return super.update(query, values);
     }
 

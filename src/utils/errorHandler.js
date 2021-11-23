@@ -6,4 +6,8 @@ const badRequestErrorHandler = (res, err) => {
     res.status(400).send(err);
 }
 
-module.exports = { internalServerErrorHandler, badRequestErrorHandler }
+const unauthorizedErrorHandler = (res, err) => {
+    res.status(401).send(err);
+}
+
+module.exports = { internalServerErrorHandler, badRequestErrorHandler, unauthorizedErrorHandler }

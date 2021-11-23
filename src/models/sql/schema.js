@@ -5,9 +5,10 @@ CREATE TABLE IF NOT EXISTS pilots (
     name TEXT NOT NULL,
     age INTEGER NOT NULL,
     credits FLOAT,
-    location TEXT NOT NULL,
+    location INTEGER NOT NULL,
 
-    PRIMARY KEY (certification)
+    PRIMARY KEY (certification),
+    FOREIGN KEY (location) REFERENCES planets(id)
 )
 `;
 
