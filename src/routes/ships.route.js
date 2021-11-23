@@ -6,5 +6,6 @@ const controller = require("../controllers/ships.controller");
 router.get("/", controller.selectAllShips);
 router.get("/:id", controller.selectShip);
 router.post("/", controller.createShip);
+router.post("/:id/refill", controller.refillFuel);
 
 module.exports = router

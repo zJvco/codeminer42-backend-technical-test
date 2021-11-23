@@ -163,8 +163,8 @@ const journey = async (req, res) => {
     ship.fuelLevel -= fuelCost;
 
     try {
-        await pilotDAO.update(pilot);
-        await shipDAO.update(ship);
+        pilotDAO.update(pilot);
+        shipDAO.update(ship);
     }
     catch (error) {
         return internalServerErrorHandler(res, error);
