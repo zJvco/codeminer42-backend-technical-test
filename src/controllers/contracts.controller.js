@@ -28,8 +28,8 @@ const selectContractById = (req, res) => {
 // Create contract
 const createContract = (req, res) => {
     const body = req.body;
-    const description = body["description"].toLowerCase();
-    const resourceName = body["resourceName"].toLowerCase();
+    const description = body["description"];
+    const resourceName = body["resourceName"];
     const resourceWeight = body["resourceWeight"];
     const originPlanetId = body["originPlanetId"];
     const destinationId = body["destinationId"];
@@ -45,11 +45,14 @@ const createContract = (req, res) => {
     else if (!validateString(description, resourceName)) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
+    else if (resourceName.toLowerCase() != "water" && resourceName.toLowerCase() != "minerals" && resourceName.toLowerCase() != "food") {
+        return badRequestErrorHandler(res, "You can insert only specify resources like water, minerals or food");
+    }
 
     // Contract attributes
     const contract = new Contract();
-    contract.description = description;
-    contract.resourceName = resourceName;
+    contract.description = description.toLowerCase();
+    contract.resourceName = resourceName.toLowerCase();
     contract.resourceWeight = resourceWeight;
     contract.originPlanetId = originPlanetId;
     contract.destinationId = destinationId;

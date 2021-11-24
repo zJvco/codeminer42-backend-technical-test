@@ -8,6 +8,8 @@ const Planet = require("../models/Planet");
 const PlanetDAO = require("../models/PlanetDAO");
 const Ship = require("../models/Ship");
 const ShipDAO = require("../models/ShipDAO");
+const Contract = require("../models/Contract");
+const ContractDAO = require("../models/ContractDAO");
 
 // Select all pilots
 const selectAllPilots = (req, res) => {
@@ -34,7 +36,7 @@ const selectPilotById = (req, res) => {
 const createPilot = (req, res) => {
     const body = req.body;
     const certification = body["certification"];
-    const name = body["name"].toLowerCase();
+    const name = body["name"];
     const age = body["age"];
     const locationId = body["locationId"];
 
@@ -51,7 +53,7 @@ const createPilot = (req, res) => {
 
     const pilot = new Pilot();
     pilot.certification = certification;
-    pilot.name = name;
+    pilot.name = name.toLowerCase();
     pilot.age = age;
     pilot.locationId = locationId;
 
@@ -67,7 +69,7 @@ const journey = async (req, res) => {
     const id = req.params.id;
 
     // Create pilot object
-    let pilot = new Pilot();
+    const pilot = new Pilot();
     pilot.certification = id;
 
     const pilotDAO = new PilotDAO();
@@ -90,7 +92,7 @@ const journey = async (req, res) => {
     }
 
     // Create origin planet object
-    let planetOrigin = new Planet();
+    const planetOrigin = new Planet();
     planetOrigin.id = pilot.locationId;
     
     const planetOriginDAO = new PlanetDAO();
@@ -105,15 +107,15 @@ const journey = async (req, res) => {
     }
 
     const body = req.body;
-    const destination = body["destination"].toLowerCase();
+    const destination = body["destination"];
 
     if (!destination) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
 
     // Create destination planet object
-    let planetDestination = new Planet();
-    planetDestination.name = destination;
+    const planetDestination = new Planet();
+    planetDestination.name = destination.toLowerCase();
 
     const planetDestinationDAO = new PlanetDAO();
 
@@ -139,7 +141,7 @@ const journey = async (req, res) => {
     }
 
     // Create ship object
-    let ship = new Ship();
+    const ship = new Ship();
     ship.pilotCertification = pilot.certification;
 
     const shipDAO = new ShipDAO();
@@ -181,4 +183,109 @@ const journey = async (req, res) => {
     }
 }
 
-module.exports = { selectAllPilots, selectPilotById, createPilot, journey }
+// Accept contract controller
+const acceptContract = async(req, res) => {
+    // Pilot id
+    const id = req.params.id;
+
+    // Create pilot object
+    const pilot = new Pilot();
+    pilot.certification = id;
+
+    const pilotDAO = new PilotDAO();
+    try {
+        const selectedPilot = await pilotDAO.select(pilot);
+        
+        if (!selectedPilot) {
+            return badRequestErrorHandler(res, "Pilot not exists");
+        }
+
+        pilot.certification = selectedPilot.certification;
+        pilot.name = selectedPilot.name;
+        pilot.age = selectedPilot.age;
+        pilot.locationId = selectedPilot.location_id;
+    }
+    catch (error) {
+        return internalServerErrorHandler(res, error);
+    }
+
+    // Create pilot ship object
+    const ship = new Ship();
+    ship.pilotCertification = pilot.certification;
+    
+    const shipDAO = new ShipDAO();
+    
+    try {
+        const selectedPilotShip = await shipDAO.selectByPilotCertification(ship);
+        
+        if (!selectedPilotShip) {
+            return badRequestErrorHandler(res, "Pilot doesn't has any ship registered in your name")
+        }
+
+        ship.id = selectedPilotShip.id;
+        ship.fuelCapacity = selectedPilotShip.fuel_capacity;
+        ship.fuelLevel = selectedPilotShip.fuel_level;
+        ship.weightCapacity = selectedPilotShip.weight_capacity;
+        ship.pilotCertification = selectedPilotShip.pilot_certification;
+    }
+    catch (error) {
+        internalServerErrorHandler(res, error);
+    }
+
+    // Receive contract id from body post
+    const body = req.body;
+    const contractId = body["contractId"];
+
+    if (!contractId) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateNumber(contractId)) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+
+    // Create contract object
+    const contract = new Contract();
+    contract.id = contractId;
+
+    const contractDAO = new ContractDAO();
+
+    try {
+        const selectedContract = await contractDAO.select(contract);
+        
+        if (!selectedContract) {
+            return badRequestErrorHandler(res, "Contract doesn't found");
+        }
+
+        contract.id = selectedContract.id;
+        contract.description = selectedContract.description;
+        contract.resourceName = selectedContract.resource_name;
+        contract.resourceWeight = selectedContract.resource_weight;
+        contract.originPlanetId = selectedContract.origin_planet_id;
+        contract.destinationId = selectedContract.destination_id;
+        contract.value = selectedContract.value;
+        contract.status = selectedContract.status;
+        contract.pilotCertification = selectedContract.pilot_certification;
+    }
+    catch (error) {
+        internalServerErrorHandler(res, error);
+    }
+
+    // Checking if the contract is open or closed
+    if (contract.status == "closed") {
+        badRequestErrorHandler(res, "This contract is closed");
+    }
+    else if (ship.weightCapacity < contract.resourceWeight) {
+        badRequestErrorHandler(res, "Ship doesn't has weight capacity to transport this cargo")
+    }
+    
+    contract.pilotCertification = pilot.certification;
+    
+    try {
+        contractDAO.update(contract);
+    }
+    catch (error) {
+        internalServerErrorHandler(res, error);
+    }
+}
+
+module.exports = { selectAllPilots, selectPilotById, createPilot, journey, acceptContract }

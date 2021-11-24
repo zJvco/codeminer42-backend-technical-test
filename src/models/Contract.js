@@ -7,7 +7,7 @@ class Contract {
         this._originPlanetId = null;
         this._destinationId = null;
         this._value = null;
-        this._status = 0;
+        this._status = "open";
         this._pilotCertification = null;
     }
 

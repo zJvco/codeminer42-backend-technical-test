@@ -37,12 +37,12 @@ const createPlanet = (req, res) => {
     else if (!validateString(name)) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
-    else if (name != "andvari" && name != "demeter" && name != "aqua" && name != "calas") {
-        return badRequestErrorHandler(res, "You can insert only specify planets like andvari, demeter, aqua, calas");
+    else if (name.toLowerCase() != "andvari" && name.toLowerCase() != "demeter" && name.toLowerCase() != "aqua" && name.toLowerCase() != "calas") {
+        return badRequestErrorHandler(res, "You can insert only specify planets like andvari, demeter, aqua or calas");
     }
 
     const planet = new Planet();
-    planet.name = name;
+    planet.name = name.toLowerCase();
 
     const planetDAO = new PlanetDAO();
     planetDAO.insert(planet)
