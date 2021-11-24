@@ -45,7 +45,7 @@ const createContract = (req, res) => {
     else if (!validateString(description, resourceName)) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
-    else if (resourceName.toLowerCase() != "water" && resourceName.toLowerCase() != "minerals" && resourceName.toLowerCase() != "food") {
+    else if (resourceName.toLowerCase() != "water" && resourceName.toLowerCase() != "mineral" && resourceName.toLowerCase() != "food") {
         return badRequestErrorHandler(res, "You can insert only specify resources like water, minerals or food");
     }
 
