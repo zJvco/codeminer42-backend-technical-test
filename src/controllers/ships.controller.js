@@ -53,6 +53,9 @@ const createShip = (req, res) => {
             if (!pilot) {
                 return badRequestErrorHandler(res, "Pilot certification is wrong, check if this pilot really exists")
             }
+            else if (pilot.age < 18) {
+                return badRequestErrorHandler(res, "The pilot is underage to join in a ship");
+            }
         })
         .catch(err => internalServerErrorHandler(res, err));
 

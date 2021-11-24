@@ -186,6 +186,7 @@ const journey = async (req, res) => {
     }
 }
 
+// Collect cargo controller
 const collectContractCargo = async (req, res) => {
     // Receive pilot id
     const id = req.params.id;
