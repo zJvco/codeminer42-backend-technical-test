@@ -112,6 +112,9 @@ const journey = async (req, res) => {
     if (!destination) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
+    else if (!validateString(destination)) {
+        return badRequestErrorHandler(res, "Invalid argument");
+    }
 
     // Create destination planet object
     const planetDestination = new Planet();
