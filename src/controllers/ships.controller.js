@@ -102,6 +102,9 @@ const refillFuel = async (req, res) => {
     if (!fuelQuantity) {
         return badRequestErrorHandler(res, "Invalid arguments");
     }
+    else if (ship.fuelCapacity == ship.fuelLevel) {
+        return badRequestErrorHandler(res, "The tank is full");
+    }
     else if ((fuelQuantity + ship.fuelLevel) > ship.fuelCapacity) {
         return badRequestErrorHandler(res, `The maximun fuel capacity is ${ship.fuelCapacity}`);
     }
