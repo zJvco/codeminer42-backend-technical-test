@@ -20,7 +20,7 @@ const selectContractById = (req, res) => {
     contract.id = id;
 
     const contractDAO = new ContractDAO();
-    contractDAO.select(contract)
+    contractDAO.selectById(contract)
         .then(contract => res.json(contract))
         .catch(err => internalServerErrorHandler(res, err));
 }

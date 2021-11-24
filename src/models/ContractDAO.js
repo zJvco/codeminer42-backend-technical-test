@@ -6,9 +6,21 @@ class ContractDAO extends DAOModel {
         return super.selectAll(query);
     }
     
-    select(obj) {
+    selectById(obj) {
         const query = "SELECT * FROM contracts WHERE id = ?";
         const values = [obj.id];
+        return super.select(query, values);
+    }
+
+    selectAllByPilotCertification(obj) {
+        const query = "SELECT * FROM contracts WHERE pilot_certification = ?";
+        const values = [obj.pilotCertification];
+        return super.selectAll(query, values);
+    }
+    
+    selectByPilotCertification(obj) {
+        const query = "SELECT * FROM contracts WHERE pilot_certification = ?";
+        const values = [obj.pilotCertification];
         return super.select(query, values);
     }
 

@@ -5,10 +5,10 @@ class DAOModel {
         this.conn = null;
     }
 
-    selectAll(query) {
+    selectAll(query, params) {
         this.openConnection();
         return new Promise((resolve, reject) => {
-            this.conn.all(query, (err, row) => {
+            this.conn.all(query, params, (err, row) => {
                 if (err) {
                     reject(err);
                 }
@@ -22,10 +22,10 @@ class DAOModel {
         });
     }
 
-    select(query, filter) {
+    select(query, params) {
         this.openConnection();
         return new Promise((resolve, reject) => {
-            this.conn.get(query, filter, (err, row) => {
+            this.conn.get(query, params, (err, row) => {
                 if (err) {
                     reject(err);
                 }
@@ -39,10 +39,10 @@ class DAOModel {
         });
     }
 
-    insert(query, filter) {
+    insert(query, params) {
         this.openConnection();
         return new Promise((resolve, reject) => {
-            this.conn.run(query, filter, (err, row) => {
+            this.conn.run(query, params, (err, row) => {
                 if (err) {
                     reject(err);
                 }
@@ -56,10 +56,10 @@ class DAOModel {
         });
     }
 
-    update(query, filter) {
+    update(query, params) {
         this.openConnection();
         return new Promise((resolve, reject) => {
-            this.conn.run(query, filter, (err, row) => {
+            this.conn.run(query, params, (err, row) => {
                 if (err) {
                     reject(err);
                 }
@@ -73,10 +73,10 @@ class DAOModel {
         });
     }
 
-    delete(query, filter) {
+    delete(query, params) {
         this.openConnection();
         return new Promise((resolve, reject) => {
-            this.conn.run(query, filter, (err, row) => {
+            this.conn.run(query, params, (err, row) => {
                 if (err) {
                     reject(err);
                 }
