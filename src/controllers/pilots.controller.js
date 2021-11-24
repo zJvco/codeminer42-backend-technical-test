@@ -229,7 +229,7 @@ const acceptContract = async(req, res) => {
         ship.pilotCertification = selectedPilotShip.pilot_certification;
     }
     catch (error) {
-        internalServerErrorHandler(res, error);
+        return internalServerErrorHandler(res, error);
     }
 
     // Receive contract id from body post
@@ -272,10 +272,13 @@ const acceptContract = async(req, res) => {
 
     // Checking if the contract is open or closed
     if (contract.status == "closed") {
-        badRequestErrorHandler(res, "This contract is closed");
+        return badRequestErrorHandler(res, "This contract is closed");
+    }
+    else if (contract.pilotCertification) {
+        return badRequestErrorHandler(res, "Already exist a pilot responsible for that contract");
     }
     else if (ship.weightCapacity < contract.resourceWeight) {
-        badRequestErrorHandler(res, "Ship doesn't has weight capacity to transport this cargo")
+        return badRequestErrorHandler(res, "Ship doesn't has weight capacity to transport this cargo")
     }
     
     contract.pilotCertification = pilot.certification;
@@ -284,7 +287,10 @@ const acceptContract = async(req, res) => {
         contractDAO.update(contract);
     }
     catch (error) {
-        internalServerErrorHandler(res, error);
+        return internalServerErrorHandler(res, error);
+    }
+    finally {
+        return res.status(200).send(`Accepted contract ${contract.id}`);
     }
 }
 
