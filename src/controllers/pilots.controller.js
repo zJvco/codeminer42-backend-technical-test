@@ -261,10 +261,10 @@ const collectContractCargo = async (req, res) => {
     }
 
     if (!contract.id) {
-        return badRequestErrorHandler(res, "Contract not found");
+        return badRequestErrorHandler(res, "Contract with open status not found");
     }
     else if (!contract.originPlanetId == pilot.locationId) {
-        return badRequestErrorHandler(res, "Pilot location is different of the cargo location");
+        return badRequestErrorHandler(res, "Pilot location is different of the cargo origin location");
     }
     else {
         contract.status = "collected";
@@ -277,6 +277,101 @@ const collectContractCargo = async (req, res) => {
         }
         finally {
             return res.status(200).send("Cargo collected");
+        }
+    }
+}
+
+// Deliver cargo controller
+const deliverContractCargo = async (req, res) => {
+    // Receive pilot id
+    const id = req.params.id;
+
+    // Create pilot object
+    const pilot = new Pilot();
+    pilot.certification = id;
+
+    const pilotDAO = new PilotDAO();
+
+    try {
+        const selectedPilot = await pilotDAO.select(pilot);
+
+        if (!selectedPilot) {
+            return badRequestErrorHandler(res, "Pilot not found");
+        }
+
+        pilot.certification = selectedPilot.certification;
+        pilot.name = selectedPilot.name;
+        pilot.age = selectedPilot.age;
+        pilot.credits = selectedPilot.credits;
+        pilot.locationId = selectedPilot.location_id;        
+    }
+    catch (error) {
+        return internalServerErrorHandler(res, error);
+    }
+
+    // Receive contract id from body post
+    const body = req.body;
+    const contractId = body["contractId"];
+
+    if (!contractId) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+    else if (!validateNumber(contractId)) {
+        return badRequestErrorHandler(res, "Invalid arguments");
+    }
+
+    // Check if pilot has a contract
+    const contract = new Contract();
+    contract.pilotCertification = pilot.certification;
+
+    const contractDAO = new ContractDAO();
+
+    try {
+        const selectedAllPilotContracts = await contractDAO.selectAllByPilotCertification(contract);
+
+        if (!selectedAllPilotContracts.length) {
+            return badRequestErrorHandler(res, "Pilot doesn't has open contracts");
+        }
+
+        for (let i = 0; i < selectedAllPilotContracts.length; i++) {
+            if (selectedAllPilotContracts[i].status === "collected") {
+                if (selectedAllPilotContracts[i].id == contractId) {
+                    contract.id = selectedAllPilotContracts[i].id;
+                    contract.description = selectedAllPilotContracts[i].description;
+                    contract.resourceName = selectedAllPilotContracts[i].resource_name;
+                    contract.resourceWeight = selectedAllPilotContracts[i].resource_weight;
+                    contract.originPlanetId = selectedAllPilotContracts[i].origin_planet_id;
+                    contract.destinationId = selectedAllPilotContracts[i].destination_id;
+                    contract.value = selectedAllPilotContracts[i].value;
+                    contract.status = selectedAllPilotContracts[i].status;
+                    contract.pilotCertification = selectedAllPilotContracts[i].pilot_certification;
+                }
+            }
+        }
+    }
+    catch (error) {
+        return internalServerErrorHandler(res, error);    
+    }
+
+    if (!contract.id) {
+        return badRequestErrorHandler(res, "Contract with collected status not found");
+    }
+    else if (!contract.destinationId == pilot.locationId) {
+        return badRequestErrorHandler(res, "Pilot location is different of the cargo destination location");
+    }
+    else {
+        pilot.credits += contract.value;
+        contract.status = "closed";
+
+        try {
+            pilotDAO.update(pilot);
+            contractDAO.update(contract);
+        }
+        catch (error) {
+            return badRequestErrorHandler(res, error);    
+        }
+        finally {
+            return res.status(200).send("Cargo delivered");
         }
     }
 }
@@ -392,4 +487,4 @@ const acceptContract = async (req, res) => {
     }
 }
 
-module.exports = { selectAllPilots, selectPilotById, createPilot, journey, acceptContract, collectContractCargo }
+module.exports = { selectAllPilots, selectPilotById, createPilot, journey, acceptContract, collectContractCargo, deliverContractCargo }

@@ -9,5 +9,6 @@ router.post("/", controller.createPilot);
 router.post("/:id/journey", controller.journey);
 router.post("/:id/accept-contract", controller.acceptContract);
 router.post("/:id/collect-cargo", controller.collectContractCargo);
+router.post("/:id/deliver-cargo", controller.deliverContractCargo);
 
 module.exports = router
