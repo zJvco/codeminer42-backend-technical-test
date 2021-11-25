@@ -7,7 +7,7 @@
     "start": "nodemon ./src/index.js",
     "createdb": "node -e 'require(\"./src/cli/db\").createdb()'",
     "dropdb": "node -e 'require(\"./src/cli/db\").dropdb()'",
-    "createmodel": "node -e 'require(\"./src/cli/db\").createmodel()'"
+    "populatedb": "node -e 'require(\"./src/cli/db\").populatedb()'"
   },
   "author": "João Victor",
   "license": "MIT",

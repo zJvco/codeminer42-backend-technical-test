@@ -28,7 +28,7 @@ module.exports.dropdb = () => {
     }
 }
 
-module.exports.createmodel = () => {
+module.exports.populatedb = () => {
     const cf = new ConnectionFactory();
 
     try {
@@ -38,6 +38,6 @@ module.exports.createmodel = () => {
         });
     }
     catch (error) {
-        throw new Error("Not was possible to create model in database, make sure you created database before");
+        throw new Error("Not was possible to populate database, make sure you created database before");
     }
 }
