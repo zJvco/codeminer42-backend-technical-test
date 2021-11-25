@@ -161,7 +161,7 @@ npm run dropdb
 
 Populate database command:
 ```
-npm run createmodel
+npm run populatedb
 ```
 
 The populate database command will insert default datas in database.
